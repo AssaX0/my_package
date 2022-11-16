@@ -179,7 +179,7 @@ class MinimalSubscriber(Node):
 
     def listener_callback(self, msg):
         linear = msg.linear.x
-        angular = msg.angular.y
+        angular = msg.angular.z
         drive1 = 128
         drive2 = 128
         drive1, drive2 = joystickToDiff(angular, linear, -1, +1, 1, 255)

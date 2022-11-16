@@ -203,7 +203,7 @@ class MinimalPublisher(Node):
             #print(str(new))
             msg = Twist()
             msg.linear.x = float(new[1])
-            msg.angular.y = float(new[0])
+            msg.angular.z = float(new[0])
             print(msg)
             self.publisher_.publish(msg)
             #self.get_logger().info('Publishing: "%s"' % msg.data)
