@@ -42,7 +42,7 @@ class md25:
         self.mode = mode
         self.address = address
         self.bus = None
-        #print('dummy is', dummy)
+        print('dummy is', dummy)
         if not dummy:
             #print('setting up SMBus')
             self.bus = smbus.SMBus(bus)
@@ -160,10 +160,10 @@ def joystickToDiff(x, y, minJoystick, maxJoystick, minSpeed, maxSpeed):# If x an
     rightOut = map(rawRight, minJoystick, maxJoystick, minSpeed, maxSpeed)
     leftOut = map(rawLeft, minJoystick, maxJoystick, minSpeed, maxSpeed)
 
-    if y < 0:
-        remember = leftOut
-        leftOut = rightOut
-        rightOut = remember
+    #if y < 0:
+    #    remember = leftOut
+    #    leftOut = rightOut
+    #    rightOut = remember
             
     return (rightOut, leftOut)
 
@@ -174,7 +174,7 @@ class MinimalSubscriber(Node):
 
     def __init__(self):
         super().__init__('driver_subscriber')
-        self.subscription = self.create_subscription(Twist,'joy',self.listener_callback,10)
+        self.subscription = self.create_subscription(Twist,'cmd_vel',self.listener_callback,10)
         self.subscription  # prevent unused variable warning
 
     def listener_callback(self, msg):
@@ -185,7 +185,7 @@ class MinimalSubscriber(Node):
         drive1, drive2 = joystickToDiff(angular, linear, -1, +1, 1, 255)
         
         print(drive1, drive2)
-        md.drive(int(drive2), int(drive1)) #drives both motors at speed 100 using the default mode
+        md.drive(int(drive1), int(drive2)) #drives both motors at speed 100 using the default mode
         
         #self.get_logger().info('I heard: "%s"' % msg.data)
 

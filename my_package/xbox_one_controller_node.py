@@ -138,11 +138,11 @@ class XboxController(object):
             for event in gamepad.read_loop():
                 #print(event)
                 if event.code == ABS_Y and event.type == 3:  # x & Y Wurden Vertauscht? fixed
-                    self.LeftJoystickY = remap(event.value, -32767, 32768, -1, +1) #/ XboxController.MAX_JOY_VAL  # normalize between -1 and 1
+                    self.LeftJoystickY = remap(event.value, -32767, 32768, +1, -1) #/ XboxController.MAX_JOY_VAL  # normalize between -1 and 1
                 elif event.code == ABS_X:  # s.o.
                     self.LeftJoystickX = remap(event.value, -32767, 32768, +1, -1) #/  #/ XboxController.MAX_JOY_VAL  # normalize between -1 and 1
                 elif event.code == ABS_RY:
-                    self.RightJoystickY = remap(event.value, -32767, 32768, -1, +1) #/ XboxController.MAX_JOY_VAL  # normalize between -1 and 1
+                    self.RightJoystickY = remap(event.value, -32767, 32768, +1, -1) #/ XboxController.MAX_JOY_VAL  # normalize between -1 and 1
                 elif event.code == ABS_RX:
                     self.RightJoystickX = remap(event.value, -32767, 32768, +1, -1) #/ XboxController.MAX_JOY_VAL  # normalize between -1 and 1
                 elif event.code == ABS_Z:
@@ -189,7 +189,7 @@ class MinimalPublisher(Node):
     
     def __init__(self):
         super().__init__('controller_publisher')
-        self.publisher_ = self.create_publisher(Twist, 'joy', 10)
+        self.publisher_ = self.create_publisher(Twist, 'cmd_vel', 10)
         timer_period = 0.01  # seconds
         self.timer = self.create_timer(timer_period, self.timer_callback)
         self.old = False
