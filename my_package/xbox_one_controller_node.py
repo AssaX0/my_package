@@ -34,7 +34,7 @@ BTN_TRIGGER_HAPPY4 = 17 #+1
 def remap(x, in_min, in_max, out_min, out_max):
     return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 
-class XboxController(object):
+class xboxcontroller(object):
     MAX_TRIG_VAL = math.pow(2, 8)
     MAX_JOY_VAL = math.pow(2, 15)
 
@@ -126,8 +126,8 @@ class XboxController(object):
 
     def readneeded(self):
         return [
-            round(self.LeftJoystickY, 1),
-            round(self.LeftJoystickX, 1),
+            round(float(self.LeftJoystickY), 1),
+            round(float(self.LeftJoystickX), 1),
             #round(self.RightJoystickY, 1),
             #round(self.RightJoystickX, 1),
             #round(self.RightTrigger - self.LeftTrigger, 1)
@@ -181,7 +181,7 @@ class XboxController(object):
                 #    self.DownDPad = event.state
 
 
-controller = XboxController()
+controller = xboxcontroller()
 
 
 class MinimalPublisher(Node):
@@ -197,16 +197,26 @@ class MinimalPublisher(Node):
     def timer_callback(self):
         
         new = controller.readneeded()
+        #if new != self.old:
+        #self.old = new
+        # Tausch
+        y = float(new[0])
+        x = float(new[1])
+            
+        #if x < 0:
+        #    y = remap(y, -1, +1, +1, -1)
+
+        #Ausgabe
         if new != self.old:
             self.old = new
-
-            #print(str(new))
-            msg = Twist()
-            msg.linear.x = float(new[1])
-            msg.angular.z = float(new[0])
-            print(msg)
-            self.publisher_.publish(msg)
-            #self.get_logger().info('Publishing: "%s"' % msg.data)
+            print("X Value: " + str(x) + " --- Y Value:" + str(y))
+        
+        msg = Twist()
+        msg.linear.x = x
+        msg.angular.z = y
+        #print(msg)
+        self.publisher_.publish(msg)
+        #self.get_logger().info('Publishing: "%s"' % msg.data)
 
 
 
