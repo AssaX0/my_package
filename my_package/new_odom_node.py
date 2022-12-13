@@ -152,33 +152,11 @@ class DriverNode(Node):
         self.x, self.y , self.theta = encoder_to_odometry(self.x, self.y, self.theta, left_rev, right_rev)
         print("Position Post-Command: X: " + str(self.x) + " , Y: " + str(self.y) + " and Theta: " + str(self.theta))
 
-        # Create an Odometry message and fill it with data from the Twist message
-        odom_msg = Odometry()
-        odom_msg.header.stamp = self.get_clock().now().to_msg()
-        odom_msg.header.frame_id = 'odom'
-        odom_msg.child_frame_id = 'base_link'
-        odom_msg.pose.pose.position.x = self.x
-        odom_msg.pose.pose.position.y = self.y
-        odom_msg.pose.pose.position.z = 0.0
-        
-        qw, qx, qy, qz = yaw_to_quaternion(self.theta)
-        #qw, qx, qy, qz = tf2_ros.transformations.quaternion_from_euler(0, 0, self.theta)
-        odom_msg.pose.pose.orientation.x = qw
-        odom_msg.pose.pose.orientation.y = qx
-        odom_msg.pose.pose.orientation.z = qy
-        odom_msg.pose.pose.orientation.w = qz
-        odom_msg.twist.twist = self.msg
-
-        #print(odom_msg)
-        # Publish the Odometry message
-        self.publisher_.publish(odom_msg)
-
         # message declarations
         odom_trans = TransformStamped()
         odom_trans.header.frame_id = 'odom'
         odom_trans.child_frame_id = 'axis'
         joint_state = JointState()
-
 
         # update joint_state
         now = self.get_clock().now()
