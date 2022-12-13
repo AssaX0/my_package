@@ -155,7 +155,7 @@ class DriverNode(Node):
         # message declarations
         odom_trans = TransformStamped()
         odom_trans.header.frame_id = 'odom'
-        odom_trans.child_frame_id = 'axis'
+        odom_trans.child_frame_id = 'base_link'
         joint_state = JointState()
 
         # update joint_state
@@ -167,9 +167,9 @@ class DriverNode(Node):
         # update transform
         # (moving in a circle with radius=2)
         odom_trans.header.stamp = now.to_msg()
-        odom_trans.transform.translation.x = cos(self.theta)*2
-        odom_trans.transform.translation.y = sin(self.theta)*2
-        odom_trans.transform.translation.z = 0.7
+        odom_trans.transform.translation.x = self.x
+        odom_trans.transform.translation.y = self.y
+        odom_trans.transform.translation.z = 0.0
         odom_trans.transform.rotation = \
             euler_to_quaternion(0, 0, self.theta + pi/2) # roll,pitch,yaw
 
