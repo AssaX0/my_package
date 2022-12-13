@@ -5,6 +5,7 @@ from geometry_msgs.msg import Twist
 from nav_msgs.msg import Odometry
 from .submodules import md25_driver
 import math
+import tf2_ros
 
 WHEEL_RADIUS = 0.099 #The Radius of the Wheels in Meters
 WHEEL_SEPARATION =  0.285 #The Seperation of the Wheels in Meters
@@ -28,12 +29,12 @@ def encoder_to_odometry(x, y, theta, left_count, right_count):
     return x, y, theta
 
 
-def yaw_to_quaternion(yaw):
-    qw = math.cos(yaw / 2)
-    qx = 0.0
-    qy = 0.0
-    qz = math.sin(yaw / 2)
-    return (qw, qx, qy, qz)
+#def yaw_to_quaternion(yaw):
+#    qw = math.cos(yaw / 2)
+#    qx = 0.0
+#    qy = 0.0
+#    qz = math.sin(yaw / 2)
+#    return (qw, qx, qy, qz)
 
 #Credits: https://www.instructables.com/Joystick-to-Differential-Drive-Python/
 def map(v, in_min, in_max, out_min, out_max):
@@ -151,7 +152,8 @@ class DriverNode(Node):
         odom_msg.pose.pose.position.y = self.y
         odom_msg.pose.pose.position.z = 0.0
         
-        qw, qx, qy, qz = yaw_to_quaternion(self.theta)
+        #qw, qx, qy, qz = yaw_to_quaternion(self.theta)
+        qw, qx, qy, qz = tf2_ros.transformations.quaternion_from_euler(0, 0, self.theta)
         odom_msg.pose.pose.orientation.x = qw
         odom_msg.pose.pose.orientation.y = qx
         odom_msg.pose.pose.orientation.z = qy
