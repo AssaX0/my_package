@@ -160,7 +160,7 @@ class DriverNode(Node):
 
         # get wheel states
         left_state, right_state = md.motor_state()
-        left_state, right_state = left_state/350, right_state/350
+        left_state, right_state = left_state/350*pi, right_state/350*pi
 
         # update joint_state
         now = self.get_clock().now()
