@@ -172,8 +172,8 @@ class DriverNode(Node):
         # update transform
         # (moving in a circle with radius=2)
         odom_trans.header.stamp = now.to_msg()
-        odom_trans.transform.translation.x = self.x
-        odom_trans.transform.translation.y = self.y
+        odom_trans.transform.translation.x = self.y
+        odom_trans.transform.translation.y = self.x
         odom_trans.transform.translation.z = 0.0
         odom_trans.transform.rotation = euler_to_quaternion(0, 0, self.theta + pi/2) # roll,pitch,yaw
 
