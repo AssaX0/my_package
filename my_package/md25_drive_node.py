@@ -1,22 +1,16 @@
 import rclpy
 from rclpy.node import Node
-
 from geometry_msgs.msg import Twist
-
 from .submodules import md25_driver
-import time
 import math
 
 #Credits: https://www.instructables.com/Joystick-to-Differential-Drive-Python/
 def map(v, in_min, in_max, out_min, out_max):
-    # Check that the value is at least in_min
     if v < in_min:
         v = in_min
-    # Check that the value is at most in_max
     if v > in_max:
         v = in_max
     return (v - in_min) * (out_max - out_min) // (in_max - in_min) + out_min
-
 
 def joystickToDiff(x, y, minJoystick, maxJoystick, minSpeed, maxSpeed):# If x and y are 0, then there is not much to calculate...
     if x == 0 and y == 0:
@@ -74,7 +68,7 @@ def joystickToDiff(x, y, minJoystick, maxJoystick, minSpeed, maxSpeed):# If x an
 
 md = md25_driver.md25()
 
-class MinimalSubscriber(Node):
+class MD25Subscriber(Node):
 
     def __init__(self):
         super().__init__('driver_subscriber')
@@ -97,7 +91,7 @@ class MinimalSubscriber(Node):
 def main(args=None):
     rclpy.init(args=args)
 
-    minimal_subscriber = MinimalSubscriber()
+    minimal_subscriber = MD25Subscriber()
 
     rclpy.spin(minimal_subscriber)
 

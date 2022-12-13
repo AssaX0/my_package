@@ -1,15 +1,12 @@
 import rclpy
 from rclpy.node import Node
-
-#from std_msgs.msg import Twist
 from geometry_msgs.msg import Twist
-
 from .submodules import xbox_one_controller_driver
 
 controller = xbox_one_controller_driver.xboxcontroller()
 
 
-class MinimalPublisher(Node):
+class ControllerPublisher(Node):
     
     
     def __init__(self):
@@ -48,7 +45,7 @@ class MinimalPublisher(Node):
 def main(args=None):
     rclpy.init(args=args)
 
-    minimal_publisher = MinimalPublisher()
+    minimal_publisher = ControllerPublisher()
 
     rclpy.spin(minimal_publisher)
 
