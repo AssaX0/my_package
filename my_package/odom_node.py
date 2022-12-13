@@ -107,12 +107,17 @@ class DriverNode(Node):
 
     def __init__(self):
         super().__init__('driver_node')
-        self.publisher_ = self.create_publisher(Odometry, 'odom', 10)
         self.subscription_ = self.create_subscription(Twist, 'cmd_vel', self.cmd_vel_callback, 10)
+        self.publisher_ = self.create_publisher(Odometry, 'odom', 10)
         # Set initial Robot Position and heading if the Robot
         self.x = 0
         self.y = 0
         self.theta = 0
+        # Store current cmd_vel
+        self.msg = Twist()
+
+        timer_period = 0.1  # seconds
+        self.timer = self.create_timer(timer_period, self.odom_callback)
 
     def cmd_vel_callback(self, msg):
         linear = msg.linear.x
@@ -121,14 +126,18 @@ class DriverNode(Node):
         drive2 = 128
         drive1, drive2 = joystickToDiff(angular, linear, -1, +1, 1, 255)
         
-        print(drive1, drive2)
         md.drive(int(drive1), int(drive2)) #drives both motors at speed 100 using the default mode
+        print("Drive: " + str(drive1) + " and " + str(drive2))
+        self.msg = msg
 
+    def odom_callback(self):
         # Convert encoder values to odom 
         left_count, right_count = md.encoders()
-
+        print("Encoders: " + str(left_count) + " and " + str(right_count))
+        print("Position Pre-Command: X: " + str(self.x) + " , Y: " + str(self.y) + " and Theta: " + str(self.theta))
         # Convert the encoder counts to odometry data
         self.x, self.y , self.theta = encoder_to_odometry(self.x, self.y, self.theta, left_count, right_count)
+        print("Position Post-Command: X: " + str(self.x) + " , Y: " + str(self.y) + " and Theta: " + str(self.theta))
 
         # Create an Odometry message and fill it with data from the Twist message
         odom_msg = Odometry()
@@ -144,10 +153,12 @@ class DriverNode(Node):
         odom_msg.pose.pose.orientation.y = qx
         odom_msg.pose.pose.orientation.z = qy
         odom_msg.pose.pose.orientation.w = qz
-        odom_msg.twist.twist = msg
+        odom_msg.twist.twist = self.msg
 
+        print(odom_msg)
         # Publish the Odometry message
         self.publisher_.publish(odom_msg)
+
 
 
 def main(args=None):
