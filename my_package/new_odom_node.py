@@ -1,21 +1,21 @@
+from math import sin, cos, pi, acos, sqrt, fabs
 import rclpy
 from rclpy.node import Node
-
+from rclpy.qos import QoSProfile
+from geometry_msgs.msg import Quaternion
+from sensor_msgs.msg import JointState
+from tf2_ros import TransformBroadcaster, TransformStamped
+from .submodules import md25_driver
 from geometry_msgs.msg import Twist
 from nav_msgs.msg import Odometry
-from .submodules import md25_driver
-import math
-from math import sin, cos, pi
-from geometry_msgs.msg import Quaternion
-#import tf2_ros
 
 WHEEL_RADIUS = 0.099 #The Radius of the Wheels in Meters
 WHEEL_SEPARATION =  0.285 #The Seperation of the Wheels in Meters
 
 def encoder_to_odometry(x, y, theta, left_count, right_count):
     #Compute the distance travveled by each wheel
-    left_distance = left_count *2 * math.pi * WHEEL_RADIUS
-    right_distance = right_count *2 * math.pi * WHEEL_RADIUS
+    left_distance = left_count *2 * pi * WHEEL_RADIUS
+    right_distance = right_count *2 * pi * WHEEL_RADIUS
 
     #Compute the delta in position and heading of the robot
     dx = (left_distance + right_distance) / 2
@@ -23,8 +23,8 @@ def encoder_to_odometry(x, y, theta, left_count, right_count):
 
     #Update the position and heading of the robot
     # Compute the new position and heading of the robot
-    x += dx * math.cos(theta + dtheta / 2)
-    y += dx * math.sin(theta + dtheta / 2)
+    x += dx * cos(theta + dtheta / 2)
+    y += dx * sin(theta + dtheta / 2)
     theta += dtheta
 
     # Return the updated values as a tuple
@@ -53,13 +53,13 @@ def joystickToDiff(x, y, minJoystick, maxJoystick, minSpeed, maxSpeed):# If x an
 
     # First Compute the angle in deg
     # First hypotenuse
-    z = math.sqrt(x * x + y * y)
+    z = sqrt(x * x + y * y)
 
     # angle in radians
-    rad = math.acos(math.fabs(x) / z)
+    rad = acos(fabs(x) / z)
 
     # and in degrees
-    angle = rad * 180 / math.pi
+    angle = rad * 180 / pi
     
     #print(angle)
     # Now angle indicates the measure of turn
@@ -68,11 +68,11 @@ def joystickToDiff(x, y, minJoystick, maxJoystick, minSpeed, maxSpeed):# If x an
     # with angle 45, the co-efficient is 0 and with angle 90, it is 1
 
     tcoeff = -1 + (angle / 90) * 2
-    turn = tcoeff * math.fabs(math.fabs(y) - math.fabs(x))
+    turn = tcoeff * fabs(fabs(y) - fabs(x))
     turn = round(turn * 100, 0) / 100
 
     # And max of y or x is the movement
-    mov = max(math.fabs(y), math.fabs(x))
+    mov = max(fabs(y), fabs(x))
 
     # First and third quadrant
     if (x >= 0 and y >= 0) or (x < 0 and y < 0):
@@ -107,7 +107,14 @@ class DriverNode(Node):
     def __init__(self):
         super().__init__('driver_node')
         self.subscription_ = self.create_subscription(Twist, 'cmd_vel', self.cmd_vel_callback, 10)
-        self.publisher_ = self.create_publisher(Odometry, 'odom', 10)
+        self.joint_pub = self.create_publisher(JointState, 'joint_states', 10)
+        self.broadcaster = TransformBroadcaster(self, qos=10)
+        self.nodeName = self.get_name()
+        self.get_logger().info("{0} started".format(self.nodeName))
+        
+        degree = pi / 180.0
+        loop_rate = self.create_rate(30)
+
         # Set initial Robot Position and heading if the Robot
         self.x = 0
         self.y = 0
@@ -166,6 +173,31 @@ class DriverNode(Node):
         # Publish the Odometry message
         self.publisher_.publish(odom_msg)
 
+        # message declarations
+        odom_trans = TransformStamped()
+        odom_trans.header.frame_id = 'odom'
+        odom_trans.child_frame_id = 'axis'
+        joint_state = JointState()
+
+
+        # update joint_state
+        now = self.get_clock().now()
+        joint_state.header.stamp = now.to_msg()
+        joint_state.name = ['left_wheel_joint', 'right_wheel_joint']
+        joint_state.position = [left_rev, right_rev]
+
+        # update transform
+        # (moving in a circle with radius=2)
+        odom_trans.header.stamp = now.to_msg()
+        odom_trans.transform.translation.x = cos(self.theta)*2
+        odom_trans.transform.translation.y = sin(self.theta)*2
+        odom_trans.transform.translation.z = 0.7
+        odom_trans.transform.rotation = \
+            euler_to_quaternion(0, 0, self.theta + pi/2) # roll,pitch,yaw
+
+        # send the joint state and transform
+        self.joint_pub.publish(joint_state)
+        self.broadcaster.sendTransform(odom_trans)
 
 
 def main(args=None):
