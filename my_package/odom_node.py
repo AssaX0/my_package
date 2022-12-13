@@ -103,13 +103,12 @@ def joystickToDiff(x, y, minJoystick, maxJoystick, minSpeed, maxSpeed):# If x an
 
 md = md25_driver.md25()
 
-# Set initial Robot Position and heading if the Robot
-x = 0
-y = 0
-theta = 0
-
-
 class DriverNode(Node):
+
+    # Set initial Robot Position and heading if the Robot
+    x = 0
+    y = 0
+    theta = 0
 
     def __init__(self):
         super().__init__('driver_node')
