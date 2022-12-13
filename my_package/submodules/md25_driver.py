@@ -116,7 +116,7 @@ class md25:
     def enableTimeout(self):
         self.bus.write_byte_data(self.address, MD25_REGISTER_COMMAND, MD25_ENABLE_TIMEOUT)
 
-    def reset(self):
+    def reset_hw_enc(self):
         self.bus.write_byte_data(self.address, MD25_REGISTER_COMMAND, MD25_RESET_ENCODERS)
 
     def hwencoder1(self):
@@ -142,7 +142,7 @@ class md25:
         return full
 
     def reset_full(self):
-        self.reset()
+        self.reset_hw_enc()
         self.swenc1 = 0
         self.swenc2 = 0
 
@@ -151,7 +151,7 @@ class md25:
         hwenc2 = int(self.hwencoder2())
         enc1 = hwenc1 + self.swenc1
         enc2 = hwenc2 + self.swenc2
-        self.reset()
+        self.reset_hw_enc()
         self.swenc1 = enc1
         self.swenc2 = enc2
         return enc1, enc2
@@ -174,7 +174,7 @@ class md25:
         while enc1 < -350:
             enc1 = enc1 + 350
 
-        while enc2 < 350:
+        while enc2 < -350:
             enc2 = enc2 + 350
 
         return float(enc1), float(enc2) 
