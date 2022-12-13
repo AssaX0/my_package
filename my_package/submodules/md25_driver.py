@@ -164,7 +164,7 @@ class md25:
 
     def motor_state(self):
         enc1, enc2 = self.encoders()
-        enc1 = -enc1
+        enc1 = 1-enc1
         while enc1 >= 350:
             enc1 = enc1 - 350
 
