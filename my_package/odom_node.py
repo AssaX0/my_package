@@ -133,9 +133,13 @@ class DriverNode(Node):
         # Convert encoder values to odom 
         left_count, right_count = md.encoder_diff()
         print("Encoders: " + str(left_count) + " and " + str(right_count))
+
+        left_rev, right_rev = left_count/350 , right_count / 350
+        print("Revolutions: " + str(left_count) + " and " + str(right_count))
+        
         print("Position Pre-Command: X: " + str(self.x) + " , Y: " + str(self.y) + " and Theta: " + str(self.theta))
         # Convert the encoder counts to odometry data
-        self.x, self.y , self.theta = encoder_to_odometry(self.x, self.y, self.theta, left_count, right_count)
+        self.x, self.y , self.theta = encoder_to_odometry(self.x, self.y, self.theta, left_rev, right_rev)
         print("Position Post-Command: X: " + str(self.x) + " , Y: " + str(self.y) + " and Theta: " + str(self.theta))
 
         # Create an Odometry message and fill it with data from the Twist message
