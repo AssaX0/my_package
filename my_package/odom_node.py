@@ -152,7 +152,7 @@ class DriverNode(Node):
         odom_msg.pose.pose.position.y = self.y
         odom_msg.pose.pose.position.z = 0.0
         
-        #qw, qx, qy, qz = yaw_to_quaternion(self.theta)
+        qw, qx, qy, qz = yaw_to_quaternion(self.theta)
         #qw, qx, qy, qz = tf2_ros.transformations.quaternion_from_euler(0, 0, self.theta)
         odom_msg.pose.pose.orientation.x = qw
         odom_msg.pose.pose.orientation.y = qx
