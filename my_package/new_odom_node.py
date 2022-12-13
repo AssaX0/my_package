@@ -166,7 +166,7 @@ class DriverNode(Node):
         joint_state.header.stamp = now.to_msg()
         joint_state.name = ['left_wheel_joint', 'right_wheel_joint']
         joint_state.position = [left_state, right_state]
-        print("State- Position ... Left: " + str(left_rev) + " , Right: " + str(right_rev))
+        print("State- Position ... Left: " + str(left_state) + " , Right: " + str(right_state))
 
         # update transform
         # (moving in a circle with radius=2)
