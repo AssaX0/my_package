@@ -34,8 +34,8 @@ def encoder_to_odometry(x, y, theta, left_count, right_count):
 
 def yaw_to_quaternion(yaw):
     qw = math.cos(yaw / 2)
-    qx = 0
-    qy = 0
+    qx = 0.0
+    qy = 0.0
     qz = math.sin(yaw / 2)
     return (qw, qx, qy, qz)
 
