@@ -171,10 +171,10 @@ class md25:
         while enc2 >= 350:
             enc2 = enc2 - 350
 
-        while enc1 <= -350:
+        while enc1 < 0:
             enc1 = enc1 + 350
 
-        while enc2 <= -350:
+        while enc2 < 0:
             enc2 = enc2 + 350
 
         return float(enc1), float(enc2) 
