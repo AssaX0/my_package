@@ -20,7 +20,8 @@ setup(
             'xbox_one_controller_node = my_package.xbox_one_controller_node:main',
             'md25_drive_node = my_package.md25_drive_node:main',
             'new_md25_drive_node = my_package.new_md25_drive_node:main',
-            'new_xbox_one_controller_node = my_package.new_xbox_one_controller_node:main'
+            'new_xbox_one_controller_node = my_package.new_xbox_one_controller_node:main',
+            'odom_node = my_package.odom_node:main'
         ],
     },
 )

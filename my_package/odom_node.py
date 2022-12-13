@@ -13,12 +13,6 @@ WHEEL_SEPARATION =  0.285 #The Seperation of the Wheels in Meters
 encoder_count_left = 0 
 encoder_count_right = 0
 
-# Set initial Robot Position and heading if the Robot
-x = 0
-y = 0
-theta = 0
-
-
 def encoder_to_odometry(x, y, theta, left_count, right_count):
     #Compute the distance travveled by each wheel
     left_distance = left_count *2 * math.pi * WHEEL_RADIUS
@@ -108,6 +102,12 @@ def joystickToDiff(x, y, minJoystick, maxJoystick, minSpeed, maxSpeed):# If x an
 
 
 md = md25_driver.md25()
+
+# Set initial Robot Position and heading if the Robot
+x = 0
+y = 0
+theta = 0
+
 
 class DriverNode(Node):
 
