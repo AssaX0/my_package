@@ -158,11 +158,14 @@ class DriverNode(Node):
         odom_trans.child_frame_id = 'base_link'
         joint_state = JointState()
 
+        # get wheel states
+        left_state, right_state = md.motor_state()
+
         # update joint_state
         now = self.get_clock().now()
         joint_state.header.stamp = now.to_msg()
         joint_state.name = ['left_wheel_joint', 'right_wheel_joint']
-        joint_state.position = [left_rev, right_rev]
+        joint_state.position = [left_state, right_state]
         print("State- Position ... Left: " + str(left_rev) + " , Right: " + str(right_rev))
 
         # update transform

@@ -161,3 +161,21 @@ class md25:
         diff = (enc1 - self.lastenc1),(enc2 - self.lastenc2) 
         self.lastenc1, self.lastenc2 = enc1, enc2
         return diff
+
+    def motor_state(self):
+        enc1, enc2 = self.encoders()
+
+        while enc1 > 350:
+            enc1 = enc1 - 350
+
+        while enc2 > 350:
+            enc1 = enc2 - 350
+
+        while enc1 < -350:
+            enc1 = enc1 + 350
+
+        while enc2 < 350:
+            enc2 = enc2 + 350
+
+        return enc1, enc2 
+
