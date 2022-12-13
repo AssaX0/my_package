@@ -158,10 +158,9 @@ class md25:
 
     def encoder_diff(self):
         enc1, enc2 = self.encoders()
-        enc1, enc2 = float(enc1 - self.lastenc1),float(enc2 - self.lastenc2) 
+        diff = float(enc1 - self.lastenc1),float(enc2 - self.lastenc2) 
         self.lastenc1, self.lastenc2 = enc1, enc2
-        return float(enc1), float(enc2)
-
+        return diff
 
     def motor_state(self):
         enc1, enc2 = self.encoders()
