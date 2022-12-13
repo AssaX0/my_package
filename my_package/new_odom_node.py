@@ -163,6 +163,7 @@ class DriverNode(Node):
         joint_state.header.stamp = now.to_msg()
         joint_state.name = ['left_wheel_joint', 'right_wheel_joint']
         joint_state.position = [left_rev, right_rev]
+        print("State- Position ... Left: " + str(left_rev) + " , Right: " + str(right_rev))
 
         # update transform
         # (moving in a circle with radius=2)
@@ -170,8 +171,7 @@ class DriverNode(Node):
         odom_trans.transform.translation.x = self.x
         odom_trans.transform.translation.y = self.y
         odom_trans.transform.translation.z = 0.0
-        odom_trans.transform.rotation = \
-            euler_to_quaternion(0, 0, self.theta + pi/2) # roll,pitch,yaw
+        odom_trans.transform.rotation = euler_to_quaternion(0, 0, self.theta + pi/2) # roll,pitch,yaw
 
         # send the joint state and transform
         self.joint_pub.publish(joint_state)
