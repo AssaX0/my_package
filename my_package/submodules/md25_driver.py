@@ -177,5 +177,5 @@ class md25:
         while enc2 < 350:
             enc2 = enc2 + 350
 
-        return enc1, enc2 
+        return float(enc1), float(enc2) 
 
