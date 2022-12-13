@@ -183,7 +183,7 @@ class MinimalSubscriber(Node):
         drive1 = 128
         drive2 = 128
         drive1, drive2 = joystickToDiff(angular, linear, -1, +1, 1, 255)
-        
+        #drive2, drive1 = drive1, drive2
         print(drive1, drive2)
         md.drive(int(drive1), int(drive2)) #drives both motors at speed 100 using the default mode
         
