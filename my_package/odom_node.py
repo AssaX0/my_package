@@ -9,10 +9,6 @@ import math
 WHEEL_RADIUS = 0.099 #The Radius of the Wheels in Meters
 WHEEL_SEPARATION =  0.285 #The Seperation of the Wheels in Meters
 
-#Define global storage variables for encoder values
-encoder_count_left = 0 
-encoder_count_right = 0
-
 def encoder_to_odometry(x, y, theta, left_count, right_count):
     #Compute the distance travveled by each wheel
     left_distance = left_count *2 * math.pi * WHEEL_RADIUS
@@ -115,6 +111,9 @@ class DriverNode(Node):
         self.theta = 0
         # Store current cmd_vel
         self.msg = Twist()
+        #Store last encoder values
+        self.encoder_count_left = 0 
+        self.encoder_count_right = 0
 
         timer_period = 0.1  # seconds
         self.timer = self.create_timer(timer_period, self.odom_callback)
@@ -132,7 +131,7 @@ class DriverNode(Node):
 
     def odom_callback(self):
         # Convert encoder values to odom 
-        left_count, right_count = md.encoders()
+        left_count, right_count = md.encoder_diff()
         print("Encoders: " + str(left_count) + " and " + str(right_count))
         print("Position Pre-Command: X: " + str(self.x) + " , Y: " + str(self.y) + " and Theta: " + str(self.theta))
         # Convert the encoder counts to odometry data

@@ -50,6 +50,9 @@ class md25:
         self.swenc1 = 0
         self.swenc2 = 0
 
+        self.lastenc1 = 0
+        self.lastenc2 = 0
+
     def ensureSet(self, args, message='', all=True):
         for name in args:
             if None == args[name]:
@@ -152,3 +155,9 @@ class md25:
         self.swenc1 = enc1
         self.swenc2 = enc2
         return enc1, enc2
+
+    def encoder_diff(self):
+        enc1, enc2 = self.encoders()
+        diff = (enc1 - self.lastenc1),(enc2 - self.lastenc2) 
+        self.lastenc1, self.lastenc2 = enc1, enc2
+        return diff
