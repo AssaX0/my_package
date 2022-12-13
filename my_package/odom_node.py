@@ -154,7 +154,7 @@ class DriverNode(Node):
         odom_msg.pose.pose.orientation.w = qz
         odom_msg.twist.twist = self.msg
 
-        print(odom_msg)
+        #print(odom_msg)
         # Publish the Odometry message
         self.publisher_.publish(odom_msg)
 
