@@ -105,15 +105,14 @@ md = md25_driver.md25()
 
 class DriverNode(Node):
 
-    # Set initial Robot Position and heading if the Robot
-    x = 0
-    y = 0
-    theta = 0
-
     def __init__(self):
         super().__init__('driver_node')
         self.publisher_ = self.create_publisher(Odometry, 'odom', 10)
         self.subscription_ = self.create_subscription(Twist, 'cmd_vel', self.cmd_vel_callback, 10)
+        # Set initial Robot Position and heading if the Robot
+        self.x = 0
+        self.y = 0
+        self.theta = 0
 
     def cmd_vel_callback(self, msg):
         linear = msg.linear.x
@@ -129,18 +128,18 @@ class DriverNode(Node):
         left_count, right_count = md.encoders()
 
         # Convert the encoder counts to odometry data
-        x, y ,theta = encoder_to_odometry(x, y, theta, left_count, right_count)
+        self.x, self.y , self.theta = encoder_to_odometry(self.x, self.y, self.theta, left_count, right_count)
 
         # Create an Odometry message and fill it with data from the Twist message
         odom_msg = Odometry()
         odom_msg.header.stamp = self.get_clock().now().to_msg()
         odom_msg.header.frame_id = 'odom'
         odom_msg.child_frame_id = 'base_link'
-        odom_msg.pose.pose.position.x = x
-        odom_msg.pose.pose.position.y = y
+        odom_msg.pose.pose.position.x = self.x
+        odom_msg.pose.pose.position.y = self.y
         odom_msg.pose.pose.position.z = 0.0
         
-        qw, qx, qy, qz = yaw_to_quaternion(theta)
+        qw, qx, qy, qz = yaw_to_quaternion(self.theta)
         odom_msg.pose.pose.orientation.x = qw
         odom_msg.pose.pose.orientation.y = qx
         odom_msg.pose.pose.orientation.z = qy
