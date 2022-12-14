@@ -159,6 +159,7 @@ class md25:
         enc1 = hwenc1 + self.swenc1
         enc2 = hwenc2 + self.swenc2
         self.reset_hw_enc()
+        print(hwenc1, self.swenc1, enc1)
         self.swenc1 = enc1
         self.swenc2 = enc2
         return float(enc1), float(enc2)
