@@ -144,11 +144,13 @@ class DriverNode(Node):
         self.msg = msg
 
     def odom_callback(self):
+        encoder_steps_per_turn = 350
+
         # Convert encoder values to odom 
         left_count, right_count = md.encoder_diff()
         print("Encoders: " + str(left_count) + " and " + str(right_count))
 
-        left_rev, right_rev = left_count/350 , right_count / 350
+        left_rev, right_rev = left_count/encoder_steps_per_turn , right_count / encoder_steps_per_turn
         print("Revolutions: " + str(left_rev) + " and " + str(right_rev))
         
         print("Position Pre-Command: X: " + str(self.x) + " , Y: " + str(self.y) + " and Theta: " + str(self.theta))
@@ -164,8 +166,9 @@ class DriverNode(Node):
 
         # get wheel states
         left_state, right_state = md.motor_state()
-        left_state, right_state = left_state/350*pi*2, right_state/350*pi*2
-        print("State- Position ... Left: " + str(left_state) + " , Right: " + str(right_state))
+        left_theta = left_state / encoder_steps_per_turn
+        right_theta = right_state / encoder_steps_per_turn
+        print("State- Position ... Left: " + str(left_theta) + " , Right: " + str(right_theta))
 
         # update joint_state
         now = self.get_clock().now()

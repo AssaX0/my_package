@@ -170,9 +170,9 @@ class md25:
     def encoders(self):
         hwenc1 = int(self.hwencoder1())
         hwenc2 = int(self.hwencoder2())
+        self.reset_hw_enc()
         enc1 = hwenc1 + self.swenc1
         enc2 = hwenc2 + self.swenc2
-        self.reset_hw_enc()
         #print(hwenc1, self.swenc1, enc1)
         self.swenc1 = enc1
         self.swenc2 = enc2
