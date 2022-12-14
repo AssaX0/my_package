@@ -142,7 +142,7 @@ class md25:
         # 4,3 m (read) - 
         # Correct Encoder values
         if read_out > MD25_ENCODER_MED:
-            read_out = MD25_ENCODER_MAX - read_out
+            read_out = read_out - MD25_ENCODER_MAX
         
         print(read_out)
 
@@ -159,7 +159,7 @@ class md25:
 
         # Correct Encoder values
         if read_out > MD25_ENCODER_MED:
-            read_out = MD25_ENCODER_MAX - read_out
+            read_out = read_out - MD25_ENCODER_MAX
         return read_out
 
     def reset_full(self):
