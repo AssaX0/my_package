@@ -132,8 +132,8 @@ class md25:
 
         # Correct Encoder values
         if read_out > MD25_ENCODER_MED:
-            corrected = MD25_ENCODER_MED - read_out
-        return corrected
+            read_out = MD25_ENCODER_MED - read_out
+        return read_out
 
 
     def hwencoder2(self):
@@ -145,8 +145,8 @@ class md25:
 
         # Correct Encoder values
         if read_out > MD25_ENCODER_MED:
-            corrected = MD25_ENCODER_MED - read_out
-        return corrected
+            read_out = MD25_ENCODER_MED - read_out
+        return read_out
 
     def reset_full(self):
         self.reset_hw_enc()
