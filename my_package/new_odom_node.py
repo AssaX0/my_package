@@ -27,6 +27,10 @@ def encoder_to_odometry(x, y, theta, left_count, right_count):
     y += dx * sin(theta + dtheta / 2)
     theta += dtheta
 
+    #fix negative theta
+    if theta < 0:
+        theta = theta + 365
+
     # Return the updated values as a tuple
     return x, y, theta
 
