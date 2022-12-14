@@ -35,6 +35,10 @@ MD25_RESET_ENCODERS = 0x20
 MD25_DISABLE_TIMEOUT = 0x32
 MD25_ENABLE_TIMEOUT = 0x33
 
+#VALUEs
+MD25_ENCODER_MAX = 256*256*256*256
+MD25_ENCODER_MED = MD25_ENCODER_MAX/2
+MD25_ENCODER_MIN = 0
 
 class md25:
     def __init__(self, mode=MD25_DEFAULT_MODE, bus=1, address=MD25_DEFAULT_ADDRESS):
@@ -124,22 +128,25 @@ class md25:
         b = self.bus.read_byte_data(self.address, MD25_REGISTER_ENC1B)
         c = self.bus.read_byte_data(self.address, MD25_REGISTER_ENC1C)
         d = self.bus.read_byte_data(self.address, MD25_REGISTER_ENC1D)
-        full = (((a * 256) + b * 256) + c * 256) + d
-        if full > 163583:
-            full = (196095 - full) * (-1)
-        return full
-        # 196095 full unsigned
-        # full signed 163583 bis -163583
+        read_out = (((a * 256) + b * 256) + c * 256) + d
+
+        # Correct Encoder values
+        if read_out > MD25_ENCODER_MED:
+            corrected = MD25_ENCODER_MED - read_out
+        return corrected
+
 
     def hwencoder2(self):
         a = self.bus.read_byte_data(self.address, MD25_REGISTER_ENC2A)
         b = self.bus.read_byte_data(self.address, MD25_REGISTER_ENC2B)
         c = self.bus.read_byte_data(self.address, MD25_REGISTER_ENC2C)
         d = self.bus.read_byte_data(self.address, MD25_REGISTER_ENC2D)
-        full = (((a * 256) + b * 256) + c * 256) + d
-        if full > 163583:
-            full = (196095 - full) * (-1)
-        return full
+        read_out = (((a * 256) + b * 256) + c * 256) + d
+
+        # Correct Encoder values
+        if read_out > MD25_ENCODER_MED:
+            corrected = MD25_ENCODER_MED - read_out
+        return corrected
 
     def reset_full(self):
         self.reset_hw_enc()
