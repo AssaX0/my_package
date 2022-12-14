@@ -9,7 +9,7 @@ from .submodules import md25_driver
 from geometry_msgs.msg import Twist
 from nav_msgs.msg import Odometry
 
-WHEEL_RADIUS = 0.099 #The Radius of the Wheels in Meters
+WHEEL_RADIUS = 0.05 #The Radius of the Wheels in Meters
 WHEEL_SEPARATION =  0.285 #The Seperation of the Wheels in Meters
 
 def encoder_to_odometry(x, y, theta, left_count, right_count):
@@ -136,7 +136,7 @@ class DriverNode(Node):
         drive1, drive2 = joystickToDiff(angular, linear, -1, +1, 1, 255)
         
         md.drive(int(drive1), int(drive2)) #drives both motors at speed 100 using the default mode
-        print("Drive: " + str(drive1) + " and " + str(drive2))
+        #print("Drive: " + str(drive1) + " and " + str(drive2))
         self.msg = msg
 
     def odom_callback(self):
@@ -145,7 +145,7 @@ class DriverNode(Node):
         print("Encoders: " + str(left_count) + " and " + str(right_count))
 
         left_rev, right_rev = left_count/350 , right_count / 350
-        print("Revolutions: " + str(left_count) + " and " + str(right_count))
+        print("Revolutions: " + str(left_rev) + " and " + str(right_rev))
         
         print("Position Pre-Command: X: " + str(self.x) + " , Y: " + str(self.y) + " and Theta: " + str(self.theta))
         # Convert the encoder counts to odometry data
@@ -161,16 +161,16 @@ class DriverNode(Node):
         # get wheel states
         left_state, right_state = md.motor_state()
         left_state, right_state = left_state/350*pi*2, right_state/350*pi*2
+        print("State- Position ... Left: " + str(left_state) + " , Right: " + str(right_state))
 
         # update joint_state
         now = self.get_clock().now()
         joint_state.header.stamp = now.to_msg()
         joint_state.name = ['left_wheel_joint', 'right_wheel_joint']
         joint_state.position = [left_state, right_state]
-        print("State- Position ... Left: " + str(left_state) + " , Right: " + str(right_state))
+       
 
         # update transform
-        # (moving in a circle with radius=2)
         odom_trans.header.stamp = now.to_msg()
         odom_trans.transform.translation.x = self.y
         odom_trans.transform.translation.y = self.y
