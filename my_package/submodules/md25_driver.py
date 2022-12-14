@@ -169,9 +169,9 @@ class md25:
     def encoder_diff(self):
         enc1, enc2 = self.encoders()
         diff = float(enc1 - self.lastenc1),float(enc2 - self.lastenc2) 
-        print("WAS: " + self.lastenc1, self.lastenc2)
-        print("IS: " + enc1, enc2)
-        print("DIFF: " + diff)
+        print("WAS: " + str(self.lastenc1), str(self.lastenc2))
+        print("IS: " + str(enc1), str(enc2))
+        print("DIFF: " + str(diff))
         self.lastenc1, self.lastenc2 = enc1, enc2
         return diff
 
