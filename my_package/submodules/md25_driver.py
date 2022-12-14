@@ -132,9 +132,18 @@ class md25:
         d = self.bus.read_byte_data(self.address, MD25_REGISTER_ENC1D)
         read_out = (((a * 256) + b * 256) + c * 256) + d
 
+        print(a)
+        print(b)
+        print(c)
+        print(d)
+        print(read_out)
+
         # Correct Encoder values
         if read_out > MD25_ENCODER_MED:
             read_out = MD25_ENCODER_MED - read_out
+
+        print(read_out)
+        
         return read_out
 
 
@@ -169,9 +178,9 @@ class md25:
     def encoder_diff(self):
         enc1, enc2 = self.encoders()
         diff = float(enc1 - self.lastenc1),float(enc2 - self.lastenc2) 
-        print("WAS: " + str(self.lastenc1), str(self.lastenc2))
-        print("IS: " + str(enc1), str(enc2))
-        print("DIFF: " + str(diff))
+        #print("WAS: " + str(self.lastenc1), str(self.lastenc2))
+        #print("IS: " + str(enc1), str(enc2))
+        #print("DIFF: " + str(diff))
         self.lastenc1, self.lastenc2 = enc1, enc2
         return diff
 
