@@ -57,6 +57,8 @@ class md25:
         self.lastenc1 = 0
         self.lastenc2 = 0
 
+        self.reset_full()
+
     def ensureSet(self, args, message='', all=True):
         for name in args:
             if None == args[name]:
