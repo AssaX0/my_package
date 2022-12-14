@@ -161,7 +161,7 @@ class md25:
         enc1 = hwenc1 + self.swenc1
         enc2 = hwenc2 + self.swenc2
         self.reset_hw_enc()
-        print(hwenc1, self.swenc1, enc1)
+        #print(hwenc1, self.swenc1, enc1)
         self.swenc1 = enc1
         self.swenc2 = enc2
         return float(enc1), float(enc2)
@@ -169,6 +169,9 @@ class md25:
     def encoder_diff(self):
         enc1, enc2 = self.encoders()
         diff = float(enc1 - self.lastenc1),float(enc2 - self.lastenc2) 
+        print("WAS: " + self.lastenc1, self.lastenc2)
+        print("IS: " + enc1, enc2)
+        print("DIFF: " + diff)
         self.lastenc1, self.lastenc2 = enc1, enc2
         return diff
 
