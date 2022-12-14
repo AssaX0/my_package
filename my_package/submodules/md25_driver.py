@@ -130,7 +130,8 @@ class md25:
         b = self.bus.read_byte_data(self.address, MD25_REGISTER_ENC1B)
         c = self.bus.read_byte_data(self.address, MD25_REGISTER_ENC1C)
         d = self.bus.read_byte_data(self.address, MD25_REGISTER_ENC1D)
-        read_out = (((a * 256) + b * 256) + c * 256) + d
+        #read_out = (((a * 256) + b * 256) + c * 256) + d
+        read_out = int.from_bytes([d,c,b,a], 'little')
 
         print(a)
         print(b)
@@ -143,7 +144,7 @@ class md25:
             read_out = MD25_ENCODER_MED - read_out
 
         print(read_out)
-        
+
         return read_out
 
 
@@ -152,7 +153,8 @@ class md25:
         b = self.bus.read_byte_data(self.address, MD25_REGISTER_ENC2B)
         c = self.bus.read_byte_data(self.address, MD25_REGISTER_ENC2C)
         d = self.bus.read_byte_data(self.address, MD25_REGISTER_ENC2D)
-        read_out = (((a * 256) + b * 256) + c * 256) + d
+        #read_out = (((a * 256) + b * 256) + c * 256) + d
+        read_out = int.from_bytes([d,c,b,a], 'little')
 
         # Correct Encoder values
         if read_out > MD25_ENCODER_MED:
