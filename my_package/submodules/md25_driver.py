@@ -139,9 +139,11 @@ class md25:
         print(d)
         print(read_out)
 
+        # 4,3 m (read) - 
         # Correct Encoder values
         if read_out > MD25_ENCODER_MED:
-            read_out = MD25_ENCODER_MED - read_out
+            read_out = read_out - MD25_ENCODER_MED *(-1)
+        
 
         print(read_out)
 
@@ -158,7 +160,7 @@ class md25:
 
         # Correct Encoder values
         if read_out > MD25_ENCODER_MED:
-            read_out = MD25_ENCODER_MED - read_out
+            read_out = read_out - MD25_ENCODER_MED *(-1)
         return read_out
 
     def reset_full(self):
