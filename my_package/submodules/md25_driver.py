@@ -191,12 +191,12 @@ class md25:
         #self.swenc2 = enc2
         diff1, diff2 = hwenc1 - self.lastenc1,hwenc2 - self.lastenc2
 
-        if diff1 > 50 or diff1 < -50:
+        if diff1 > 100 or diff1 < -100:
             enc1 = self.lastenc1
         else:
             enc1 = hwenc1
 
-        if diff2 > 50 or diff2 < -50:
+        if diff2 > 100 or diff2 < -100:
             enc2 = self.lastenc2
         else:
             enc2 = hwenc2
