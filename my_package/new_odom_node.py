@@ -28,8 +28,8 @@ def encoder_to_odometry(x, y, theta, left_count, right_count):
     theta += dtheta
 
     #fix negative theta
-    if theta < 0:
-        theta = theta + 360
+    #if theta < 0:
+    #    theta = theta + 360
 
 
     # Return the updated values as a tuple
@@ -182,7 +182,7 @@ class DriverNode(Node):
         odom_trans.transform.translation.x = self.x
         odom_trans.transform.translation.y = self.y
         odom_trans.transform.translation.z = 0.0
-        odom_trans.transform.rotation = euler_to_quaternion(0, 0, 0) # roll,pitch,yaw
+        odom_trans.transform.rotation = euler_to_quaternion(0, 0, self.theta) # roll,pitch,yaw
 
         # send the joint state and transform
         self.joint_pub.publish(joint_state)
