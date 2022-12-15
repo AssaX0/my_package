@@ -133,7 +133,7 @@ class md25:
         #read_out = (((a * 256) + b * 256) + c * 256) + d
         read_out = int.from_bytes([d,c,b,a], 'little')
 
-        #print("Encoders:")
+        #print("Encoder 1:")
         #print(a)
         #print(b)
         #print(c)
@@ -158,9 +158,20 @@ class md25:
         #read_out = (((a * 256) + b * 256) + c * 256) + d
         read_out = int.from_bytes([d,c,b,a], 'little')
 
+        #print("Encoder 2:")
+        #print(a)
+        #print(b)
+        #print(c)
+        #print(d)
+        #print(read_out)
+
+
         # Correct Encoder values
         if read_out > MD25_ENCODER_MED:
             read_out = read_out - MD25_ENCODER_MAX
+        
+        #print(read_out)
+
         return read_out
 
     def reset_full(self):
@@ -174,8 +185,8 @@ class md25:
         self.reset_hw_enc()
         enc1 = hwenc1 + self.swenc1
         enc2 = hwenc2 + self.swenc2
-        print(hwenc1, self.swenc1, enc1)
-        print(hwenc2, self.swenc2, enc2)
+        print("Encoder 1: ",hwenc1, self.swenc1, enc1)
+        print("Encoder 2: ",hwenc2, self.swenc2, enc2)
         self.swenc1 = enc1
         self.swenc2 = enc2
         return enc1, enc2
