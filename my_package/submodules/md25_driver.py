@@ -57,7 +57,7 @@ class md25:
         self.lastenc1 = 0
         self.lastenc2 = 0
 
-        self.reset_full()
+        self.reset_hw_enc()
 
     def ensureSet(self, args, message='', all=True):
         for name in args:
