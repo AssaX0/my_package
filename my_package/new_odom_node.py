@@ -27,11 +27,6 @@ def encoder_to_odometry(x, y, theta, left_count, right_count):
     y += dx * sin(theta + dtheta / 2)
     theta += dtheta
 
-    #fix negative theta
-    #if theta < 0:
-    #    theta = theta + 360
-
-
     # Return the updated values as a tuple
     return x, y, theta
 
@@ -165,7 +160,7 @@ class DriverNode(Node):
 
         # get wheel states
         left_state, right_state = md.motor_state()
-        left_state, right_state = (left_state * 2 * pi) / (350 * 360), (right_state * 2 * pi) / (350 * 360)
+        left_state, right_state = ((left_state * 2 * pi) / (350 * 360))*(-1), (right_state * 2 * pi) / (350 * 360)
         print("State- Position ... Left: " + str(left_state) + " , Right: " + str(right_state))
 
         # update joint_state
