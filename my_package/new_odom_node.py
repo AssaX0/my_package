@@ -141,7 +141,7 @@ class DriverNode(Node):
 
     def odom_callback(self):
         # Convert encoder values to odom 
-        left_count, right_count = md.encoder_diff()
+        left_count, right_count = md.encoders()
         print("Encoders DIFF: " + str(left_count) + " and " + str(right_count))
 
         left_rev, right_rev = float(left_count)/350 , float(right_count) / 350
@@ -159,7 +159,13 @@ class DriverNode(Node):
         joint_state = JointState()
 
         # get wheel states
-        left_state, right_state = md.motor_state()
+        #left_state, right_state = md.motor_state()
+        while left_state > 350:
+            left_state = left_state - 350
+
+        while right_state > 350:
+            right_state = right_state - 350
+
         left_state, right_state = float(left_state)/350*pi*2, float(right_state)/350*pi*2
         #print("State- Position ... Left: " + str(left_state) + " , Right: " + str(right_state))
 
