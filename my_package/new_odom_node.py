@@ -142,9 +142,15 @@ class DriverNode(Node):
     def odom_callback(self):
         # Convert encoder values to odom 
         left_count, right_count = md.encoders()
-        print("Encoders DIFF: " + str(left_count) + " and " + str(right_count))
+        print("Encoders Value: " + str(left_count) + " and " + str(right_count))
 
-        left_rev, right_rev = float(left_count)/350 , float(right_count) / 350
+        # Save Value and Calculate diff
+        diff_left , diff_right = left_count - self.encoder_count_left, right_count - self.encoder_count_right
+        self.encoder_count_left, self.encoder_count_right = left_count, right_count
+        print("Encoder Diff: " + str(diff_left) + " and " + str(diff_right))
+
+        
+        left_rev, right_rev = float(diff_left)/350 , float(diff_right) / 350
         #print("Revolutions: " + str(left_rev) + " and " + str(right_rev))
         
         print("Position Pre-Command: X: " + str(self.x) + " , Y: " + str(self.y) + " and Theta: " + str(self.theta))
