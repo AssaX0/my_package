@@ -29,7 +29,8 @@ def encoder_to_odometry(x, y, theta, left_count, right_count):
 
     #fix negative theta
     if theta < 0:
-        theta = theta + 365
+        theta = theta + 360
+
 
     # Return the updated values as a tuple
     return x, y, theta
@@ -151,7 +152,7 @@ class DriverNode(Node):
         left_rev, right_rev = left_count/350 , right_count / 350
         print("Revolutions: " + str(left_rev) + " and " + str(right_rev))
         
-        print("Position Pre-Command: X: " + str(self.x) + " , Y: " + str(self.y) + " and Theta: " + str(self.theta))
+        #print("Position Pre-Command: X: " + str(self.x) + " , Y: " + str(self.y) + " and Theta: " + str(self.theta))
         # Convert the encoder counts to odometry data
         self.x, self.y , self.theta = encoder_to_odometry(self.x, self.y, self.theta, left_rev, right_rev)
         print("Position Post-Command: X: " + str(self.x) + " , Y: " + str(self.y) + " and Theta: " + str(self.theta))
@@ -164,7 +165,7 @@ class DriverNode(Node):
 
         # get wheel states
         left_state, right_state = md.motor_state()
-        left_state, right_state = left_state/350*pi*2, right_state/350*pi*2
+        left_state, right_state = (left_state * 2 * pi) / (350 * 360), (right_state * 2 * pi) / (350 * 360)
         print("State- Position ... Left: " + str(left_state) + " , Right: " + str(right_state))
 
         # update joint_state
@@ -172,6 +173,8 @@ class DriverNode(Node):
         joint_state.header.stamp = now.to_msg()
         joint_state.name = ['left_wheel_joint', 'right_wheel_joint']
         joint_state.position = [left_state, right_state]
+        #joint_state.velocity = [0.0, 0.0]
+        #joint_state.effort = [0.0, 0.0]
        
 
         # update transform
@@ -179,7 +182,7 @@ class DriverNode(Node):
         odom_trans.transform.translation.x = self.x
         odom_trans.transform.translation.y = self.y
         odom_trans.transform.translation.z = 0.0
-        odom_trans.transform.rotation = euler_to_quaternion(0, 0, self.theta) # roll,pitch,yaw
+        odom_trans.transform.rotation = euler_to_quaternion(0, 0, 0) # roll,pitch,yaw
 
         # send the joint state and transform
         self.joint_pub.publish(joint_state)
