@@ -160,6 +160,7 @@ class DriverNode(Node):
 
         # get wheel states
         #left_state, right_state = md.motor_state()
+        left_state, right_state = left_count, right_count 
         while left_state > 350:
             left_state = left_state - 350
 
