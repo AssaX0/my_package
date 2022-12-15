@@ -122,8 +122,8 @@ class DriverNode(Node):
         # Store current cmd_vel
         self.msg = Twist()
         #Store last encoder values
-        self.encoder_count_left = 0 
-        self.encoder_count_right = 0
+        #elf.encoder_count_left = 0 
+        #self.encoder_count_right = 0
 
         timer_period = 0.1  # seconds
         self.timer = self.create_timer(timer_period, self.odom_callback)
@@ -141,16 +141,15 @@ class DriverNode(Node):
 
     def odom_callback(self):
         # Convert encoder values to odom 
-        left_count, right_count = md.encoders()
+        left_count, right_count = md.encoder_diff()
         print("Encoders Value: " + str(left_count) + " and " + str(right_count))
 
         # Save Value and Calculate diff
-        diff_left , diff_right = left_count - self.encoder_count_left, right_count - self.encoder_count_right
-        self.encoder_count_left, self.encoder_count_right = left_count, right_count
-        print("Encoder Diff: " + str(diff_left) + " and " + str(diff_right))
+        #diff_left , diff_right = left_count - self.encoder_count_left, right_count - self.encoder_count_right
+        #self.encoder_count_left, self.encoder_count_right = left_count, right_count
+        #print("Encoder Diff: " + str(diff_left) + " and " + str(diff_right))
 
-        
-        left_rev, right_rev = float(diff_left)/350 , float(diff_right) / 350
+        left_rev, right_rev = float(left_count)/350 , float(right_count) / 350
         #print("Revolutions: " + str(left_rev) + " and " + str(right_rev))
         
         print("Position Pre-Command: X: " + str(self.x) + " , Y: " + str(self.y) + " and Theta: " + str(self.theta))
@@ -165,8 +164,8 @@ class DriverNode(Node):
         joint_state = JointState()
 
         # get wheel states
-        #left_state, right_state = md.motor_state()
-        left_state, right_state = left_count, right_count 
+        left_state, right_state = md.motor_state()
+        #left_state, right_state = left_count, right_count 
         while left_state > 350:
             left_state = left_state - 350
 

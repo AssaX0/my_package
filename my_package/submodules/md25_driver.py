@@ -189,7 +189,19 @@ class md25:
         #print("Encoder 2: ",hwenc2, self.swenc2, enc2)
         #self.swenc1 = enc1
         #self.swenc2 = enc2
-        return hwenc1, hwenc2
+        diff1, diff2 = hwenc1 - self.lastenc1,hwenc2 - self.lastenc2
+
+        if diff1 > 2000 or diff1 < -2000:
+            enc1 = self.lastenc1
+        else:
+            enc1 = hwenc1
+
+        if diff2 > 2000 or diff2 < -2000:
+            enc2 = self.lastenc2
+        else:
+            enc2 = hwenc2
+
+        return enc1, enc2
 
     def encoder_diff(self):
         enc1, enc2 = self.encoders()
