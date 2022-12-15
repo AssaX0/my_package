@@ -125,7 +125,7 @@ class DriverNode(Node):
         #elf.encoder_count_left = 0 
         #self.encoder_count_right = 0
 
-        timer_period = 0.1  # seconds
+        timer_period = 0.01  # seconds
         self.timer = self.create_timer(timer_period, self.odom_callback)
 
     def cmd_vel_callback(self, msg):
@@ -142,7 +142,7 @@ class DriverNode(Node):
     def odom_callback(self):
         # Convert encoder values to odom 
         left_count, right_count = md.encoder_diff()
-        print("Encoders Value: " + str(left_count) + " and " + str(right_count))
+        #print("Encoders Value: " + str(left_count) + " and " + str(right_count))
 
         # Save Value and Calculate diff
         #diff_left , diff_right = left_count - self.encoder_count_left, right_count - self.encoder_count_right
@@ -152,10 +152,10 @@ class DriverNode(Node):
         left_rev, right_rev = float(left_count)/350 , float(right_count) / 350
         #print("Revolutions: " + str(left_rev) + " and " + str(right_rev))
         
-        print("Position Pre-Command: X: " + str(self.x) + " , Y: " + str(self.y) + " and Theta: " + str(self.theta))
+        #print("Position Pre-Command: X: " + str(self.x) + " , Y: " + str(self.y) + " and Theta: " + str(self.theta))
         # Convert the encoder counts to odometry data
         self.x, self.y , self.theta = encoder_to_odometry(self.x, self.y, self.theta, left_rev, right_rev)
-        print("Position Post-Command: X: " + str(self.x) + " , Y: " + str(self.y) + " and Theta: " + str(self.theta))
+        #print("Position Post-Command: X: " + str(self.x) + " , Y: " + str(self.y) + " and Theta: " + str(self.theta))
 
         # message declarations
         odom_trans = TransformStamped()
