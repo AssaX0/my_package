@@ -47,7 +47,7 @@ class md25:
         self.bus = None
         print('dummy is', dummy)
         if not dummy:
-            print('setting up SMBus')
+            #print('setting up SMBus')
             self.bus = smbus.SMBus(bus)
             self.bus.write_byte_data(self.address, MD25_REGISTER_MODE, self.mode)
         #ADDED FOR ADVANCED ENCODER FUNCTIONALITY
@@ -75,7 +75,7 @@ class md25:
                     "%s (%i) was out of range (%i - %i). %s" % (name, args[name], range[0], range[1], message))
 
     def drive(self, motor0=None, motor1=None, speed=None, turn=None):
-        print(motor0, motor1, speed, turn)
+        #print(motor0, motor1, speed, turn)
         if 0 == self.mode:
             self.ensureSet({'motor0': motor0, 'motor1': motor1}, all=False)
             self.ensureRange((1, 255), {'motor0': motor0, 'motor1': motor1})

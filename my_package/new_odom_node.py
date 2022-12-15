@@ -155,7 +155,7 @@ class DriverNode(Node):
         #print("Position Pre-Command: X: " + str(self.x) + " , Y: " + str(self.y) + " and Theta: " + str(self.theta))
         # Convert the encoder counts to odometry data
         self.x, self.y , self.theta = encoder_to_odometry(self.x, self.y, self.theta, left_rev, right_rev)
-        #print("Position Post-Command: X: " + str(self.x) + " , Y: " + str(self.y) + " and Theta: " + str(self.theta))
+        print("Position Post-Command: X: " + str(self.x) + " , Y: " + str(self.y) + " and Theta: " + str(self.theta))
 
         # message declarations
         odom_trans = TransformStamped()
