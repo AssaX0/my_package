@@ -177,16 +177,16 @@ class md25:
         #print(hwenc1, self.swenc1, enc1)
         self.swenc1 = enc1
         self.swenc2 = enc2
-        return float(enc1), float(enc2)
+        return enc1, enc2
 
     def encoder_diff(self):
         enc1, enc2 = self.encoders()
-        diff = float(enc1 - self.lastenc1),float(enc2 - self.lastenc2) 
+        diff1, diff2 = enc1 - self.lastenc1,enc2 - self.lastenc2
         #print("WAS: " + str(self.lastenc1), str(self.lastenc2))
         #print("IS: " + str(enc1), str(enc2))
         #print("DIFF: " + str(diff))
         self.lastenc1, self.lastenc2 = enc1, enc2
-        return diff
+        return diff1, diff2 
 
     def motor_state(self):
         enc1, enc2 = self.encoders()
@@ -203,5 +203,5 @@ class md25:
         while enc2 < 0:
             enc2 = enc2 + 350
 
-        return float(enc1), float(enc2) 
+        return enc1, enc2
 
