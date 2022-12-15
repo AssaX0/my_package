@@ -51,8 +51,8 @@ class md25:
             self.bus = smbus.SMBus(bus)
             self.bus.write_byte_data(self.address, MD25_REGISTER_MODE, self.mode)
         #ADDED FOR ADVANCED ENCODER FUNCTIONALITY
-        self.swenc1 = 0
-        self.swenc2 = 0
+        #self.swenc1 = 0
+        #self.swenc2 = 0
 
         self.lastenc1 = 0
         self.lastenc2 = 0
@@ -174,22 +174,22 @@ class md25:
 
         return read_out
 
-    def reset_full(self):
-        self.reset_hw_enc()
-        self.swenc1 = 0
-        self.swenc2 = 0
+    #def reset_full(self):
+    #    self.reset_hw_enc()
+    #    self.swenc1 = 0
+    #    self.swenc2 = 0
 
     def encoders(self):
         hwenc1 = int(self.hwencoder1())
         hwenc2 = int(self.hwencoder2())
-        self.reset_hw_enc()
-        enc1 = hwenc1 + self.swenc1
-        enc2 = hwenc2 + self.swenc2
+        #self.reset_hw_enc()
+        #enc1 = hwenc1 + self.swenc1
+        #enc2 = hwenc2 + self.swenc2
         #print("Encoder 1: ",hwenc1, self.swenc1, enc1)
         #print("Encoder 2: ",hwenc2, self.swenc2, enc2)
-        self.swenc1 = enc1
-        self.swenc2 = enc2
-        return enc1, enc2
+        #self.swenc1 = enc1
+        #self.swenc2 = enc2
+        return hwenc1, hwenc2
 
     def encoder_diff(self):
         enc1, enc2 = self.encoders()
