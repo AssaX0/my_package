@@ -186,10 +186,10 @@ class DriverNode(Node):
 
         # update transform
         odom_trans.header.stamp = now.to_msg()
-        odom_trans.transform.translation.x = -self.x
-        odom_trans.transform.translation.y = -self.y
+        odom_trans.transform.translation.x = self.x
+        odom_trans.transform.translation.y = self.y
         odom_trans.transform.translation.z = 0.0
-        odom_trans.transform.rotation = euler_to_quaternion(0, 0, -self.theta) # roll,pitch,yaw
+        odom_trans.transform.rotation = euler_to_quaternion(0, 0, self.theta) # roll,pitch,yaw
 
         # send the joint state and transform
         self.joint_pub.publish(joint_state)
