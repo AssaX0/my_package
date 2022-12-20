@@ -164,11 +164,11 @@ class OdometryNode(Node):
         odometry.child_frame_id = self.child_frame_id
         odometry.pose.pose.position.x = self.x
         odometry.pose.pose.position.y = self.y
-        quaternion = tf2_ros.transformations.quaternion_from_euler(0, 0, self.theta)
-        odometry.pose.pose.orientation.x = quaternion[0]
-        odometry.pose.pose.orientation.y = quaternion[1]
-        odometry.pose.pose.orientation.z = quaternion[2]
-        odometry.pose.pose.orientation.w = quaternion[3]
+        quaternion = euler_to_quaternion(0, 0, self.theta) # roll,pitch,yaw
+        odometry.pose.pose.orientation.x = quaternion.x
+        odometry.pose.pose.orientation.y = quaternion.y
+        odometry.pose.pose.orientation.z = quaternion.z
+        odometry.pose.pose.orientation.w = quaternion.w
         odometry.twist.twist.linear.x = distance / self.update_rate
         odometry.twist.twist.angular.z = delta_theta / self.update_rate
         return odometry
