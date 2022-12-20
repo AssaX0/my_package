@@ -109,7 +109,7 @@ class OdometryNode(Node):
         self.subscription = self.create_subscription(Twist, 'cmd_vel', self.cmd_vel_callback, 10)
 
         # Create a publisher for the odometry topic
-        self.odometry_publisher = self.create_publisher(Odometry, 'odometry', 10)
+        self.odometry_publisher = self.create_publisher(Odometry, 'odom', 10)
 
         # Create a publisher for the joint_states topic
         self.joint_state_publisher = self.create_publisher(JointState, 'joint_states', 10)
