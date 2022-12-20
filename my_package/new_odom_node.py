@@ -107,9 +107,9 @@ class DriverNode(Node):
     def __init__(self):
         super().__init__('driver_node')
         self.subscription_ = self.create_subscription(Twist, 'cmd_vel', self.cmd_vel_callback, 10)
-        self.joint_pub = self.create_publisher(JointState, 'joint_states', 10)
+        #self.joint_pub = self.create_publisher(JointState, 'joint_states', 10)
         self.odometry_publisher = self.create_publisher(Odometry, 'odometry', 10)
-        self.broadcaster = TransformBroadcaster(self, qos=10)
+        #self.broadcaster = TransformBroadcaster(self, qos=10)
         self.nodeName = self.get_name()
         self.get_logger().info("{0} started".format(self.nodeName))
         
