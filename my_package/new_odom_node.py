@@ -108,6 +108,7 @@ class DriverNode(Node):
         super().__init__('driver_node')
         self.subscription_ = self.create_subscription(Twist, 'cmd_vel', self.cmd_vel_callback, 10)
         self.joint_pub = self.create_publisher(JointState, 'joint_states', 10)
+        self.odometry_publisher = self.create_publisher(Odometry, 'odometry', 10)
         self.broadcaster = TransformBroadcaster(self, qos=10)
         self.nodeName = self.get_name()
         self.get_logger().info("{0} started".format(self.nodeName))
@@ -194,6 +195,26 @@ class DriverNode(Node):
         # send the joint state and transform
         self.joint_pub.publish(joint_state)
         self.broadcaster.sendTransform(odom_trans)
+
+
+         # Create an Odometry message and fill it with data from the Twist message
+        odom_msg = Odometry()
+        odom_msg.header.stamp = self.get_clock().now().to_msg()
+        odom_msg.header.frame_id = 'odom'
+        odom_msg.child_frame_id = 'base_link'
+        odom_msg.pose.pose.position.x = self.x
+        odom_msg.pose.pose.position.y = self.y
+        odom_msg.pose.pose.position.z = 0.0
+        
+        qw, qx, qy, qz = euler_to_quaternion(0,0, self.theta)
+        #qw, qx, qy, qz = tf2_ros.transformations.quaternion_from_euler(0, 0, self.theta)
+        odom_msg.pose.pose.orientation.x = qw
+        odom_msg.pose.pose.orientation.y = qx
+        odom_msg.pose.pose.orientation.z = qy
+        odom_msg.pose.pose.orientation.w = qz
+        odom_msg.twist.twist = self.msg
+
+        self.odometry_publisher.publish(odom_msg)
 
 
 def main(args=None):
