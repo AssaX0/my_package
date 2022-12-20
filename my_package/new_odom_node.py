@@ -193,11 +193,11 @@ class DriverNode(Node):
         odom_trans.transform.rotation = euler_to_quaternion(0, 0, self.theta) # roll,pitch,yaw
 
         # send the joint state and transform
-        self.joint_pub.publish(joint_state)
+        #self.joint_pub.publish(joint_state)
         self.broadcaster.sendTransform(odom_trans)
 
 
-         # Create an Odometry message and fill it with data from the Twist message
+        # Create an Odometry message and fill it with data from the Twist message
         odom_msg = Odometry()
         odom_msg.header.stamp = self.get_clock().now().to_msg()
         odom_msg.header.frame_id = 'odom'
