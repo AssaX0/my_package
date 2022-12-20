@@ -99,9 +99,9 @@ class OdometryNode(Node):
         self.encoder_resolution = (2 * pi * self.wheel_radius)  / 255  # meters per tick / ggf 250
 
         # Initialize the position and orientation of the robot
-        self.x = 0
-        self.y = 0
-        self.theta = 0
+        self.x = 0.0
+        self.y = 0.0
+        self.theta = 0.0
 
         # Create a subscriber for the cmd_vel topic
         self.subscription = self.create_subscription(Twist, 'cmd_vel', self.cmd_vel_callback, 10)
