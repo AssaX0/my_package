@@ -8,6 +8,17 @@ from nav_msgs.msg import Odometry
 from .submodules import md25_driver
 from math import sin, cos, sqrt, acos, fabs, pi
 
+
+#Credits: https://www.instructables.com/Joystick-to-Differential-Drive-Python/
+# Renamed map to remap
+def remap(v, in_min, in_max, out_min, out_max):
+    if v < in_min:
+        v = in_min
+    if v > in_max:
+        v = in_max
+    return (v - in_min) * (out_max - out_min) // (in_max - in_min) + out_min
+
+
 def joystickToDiff(x, y, minJoystick, maxJoystick, minSpeed, maxSpeed):# If x and y are 0, then there is not much to calculate...
     if x == 0 and y == 0:
         return (128, 128)
@@ -51,8 +62,8 @@ def joystickToDiff(x, y, minJoystick, maxJoystick, minSpeed, maxSpeed):# If x an
 
     # minJoystick, maxJoystick, minSpeed, maxSpeed
     # Map the values onto the defined rang
-    rightOut = map(rawRight, minJoystick, maxJoystick, minSpeed, maxSpeed)
-    leftOut = map(rawLeft, minJoystick, maxJoystick, minSpeed, maxSpeed)
+    rightOut = remap(rawRight, minJoystick, maxJoystick, minSpeed, maxSpeed)
+    leftOut = remap(rawLeft, minJoystick, maxJoystick, minSpeed, maxSpeed)
 
     #if y < 0:
     #    remember = leftOut
