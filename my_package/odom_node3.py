@@ -103,6 +103,8 @@ class OdometryNode(Node):
         self.y = 0.0
         self.theta = 0.0
 
+        self.msg = Twist()
+
         # Create a subscriber for the cmd_vel topic
         self.subscription = self.create_subscription(Twist, 'cmd_vel', self.cmd_vel_callback, 10)
 
@@ -143,8 +145,8 @@ class OdometryNode(Node):
     
     def calculate_odometry(self, encoder_left, encoder_right):
         # Calculate the distance traveled by each wheel
-        distance_left = encoder_left * self.encoder_resolution * self.wheel_radius
-        distance_right = encoder_right * self.encoder_resolution * self.wheel_radius
+        distance_left = float(encoder_left) * self.encoder_resolution * self.wheel_radius
+        distance_right = float(encoder_right) * self.encoder_resolution * self.wheel_radius
 
         # Calculate the distance traveled by the center of the robot
         distance = (distance_left + distance_right) / 2
@@ -153,8 +155,8 @@ class OdometryNode(Node):
         delta_theta = (distance_right - distance_left) / self.wheel_base
 
         # Update the position and orientation of the robot based on the distance traveled and change in orientation
-        self.x += distance * cos(self.theta)
-        self.y += distance * sin(self.theta)
+        self.x += float(distance * cos(self.theta))
+        self.y += float(distance * sin(self.theta))
         self.theta += delta_theta
 
         # Create and return the odometry message
