@@ -137,7 +137,7 @@ class OdometryNode(Node):
         # Create a JointState message with the joint positions of the wheels
         joint_state = JointState()
         joint_state.name = ['left_wheel', 'right_wheel']
-        joint_state.position = [encoder_left, encoder_right]
+        joint_state.position = [float(encoder_left), float(encoder_right)]
         self.joint_state_publisher.publish(joint_state)
 
     
