@@ -194,7 +194,7 @@ class DriverNode(Node):
 
         # send the joint state and transform
         #self.joint_pub.publish(joint_state)
-        self.broadcaster.sendTransform(odom_trans)
+        #self.broadcaster.sendTransform(odom_trans)
 
 
         # Create an Odometry message and fill it with data from the Twist message
